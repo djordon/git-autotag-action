@@ -9,10 +9,10 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Does this work?
-      run: echo "$APP_FULL_VERSION"
-      env:
+      run: echo "$(git describe --dirty --tags)"
+      # env:
         # APP_VERSION: ${{ cat mix.exs | grep --line-buffer "version: " | grep --extended-regexp --only-matching "[0-9\.]+" }}
-        APP_FULL_VERSION: ${{ git describe --dirty --tags }}
+        # APP_FULL_VERSION: ${{ git describe --dirty --tags }}
     # - uses: ./action-a
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
