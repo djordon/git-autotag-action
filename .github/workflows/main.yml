@@ -9,9 +9,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Does this work?
-      run: echo "$APP_VERSION $APP_FULL_VERSION"
+      run: echo "$APP_FULL_VERSION"
       env:
-        APP_VERSION: ${{ cat mix.exs | grep --line-buffer "version: " | grep --extended-regexp --only-matching "[0-9\.]+" }}
+        # APP_VERSION: ${{ cat mix.exs | grep --line-buffer "version: " | grep --extended-regexp --only-matching "[0-9\.]+" }}
         APP_FULL_VERSION: ${{ git describe --dirty --tags }}
     # - uses: ./action-a
     #   env:
