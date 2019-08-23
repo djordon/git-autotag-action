@@ -11,9 +11,7 @@ jobs:
     - name: Does this work?
       run: echo "$(git describe --dirty --tags)"
     - name: what about this
-      run: echo $(cat mix.exs \
-        | grep --line-buffer "version: " \
-        | grep --extended-regexp --only-matching "[0-9\.]+")
+      run: echo $(cat mix.exs | grep --line-buffer "version: " | grep --extended-regexp --only-matching "[0-9\.]+")
         # APP_FULL_VERSION: ${{ git describe --dirty --tags)
       # env:
         # APP_VERSION: ${{ cat mix.exs | grep --line-buffer "version: " | grep --extended-regexp --only-matching "[0-9\.]+" }}
