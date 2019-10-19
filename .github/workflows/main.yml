@@ -1,4 +1,4 @@
-name: A workflow for tagging master based on the contents mix.exs
+name: Tagging master using mix.exs
 on: 
   push:
     branches:
