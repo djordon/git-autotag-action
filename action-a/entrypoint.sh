@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 
-APP_VERSION=$(cat mix.exs \
-    | grep --line-buffer "version: " \
-    | grep --extended-regexp --only-matching "[0-9\.]+")
+VERSION=$(cat mix.exs | grep "version: " | sed -e 's/.*version: "\(.*\)",/\1/')
+TAG=$(git tag | grep --extended-regexp "^v${VERSION}$")
 
-echo "The version is supposed to be $APP_VERSION"
+if [ ! -z $TAG ]
+then 
+    echo "Tag $TAG already exists. Exiting"
+    exit 0
+fi
 
-APP_FULL_VERSION=$(git describe --dirty --tags)
+COMMIT=$(git rev-parse HEAD)
 
-echo
+curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -d @- << EOF
+{
+  "ref": "refs/tags/v${VERSION}",
+  "sha": "${COMMIT}"
+}
+EOF
