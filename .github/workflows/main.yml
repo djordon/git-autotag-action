@@ -1,4 +1,4 @@
-name: A workflow for my Hello World file
+name: A workflow for tagging master based on the contents mix.exs
 on: 
   push:
     branches:
@@ -13,6 +13,6 @@ jobs:
     - name: The current tag
       run: echo $(git describe --dirty --tags)
     - name: Tag master depending on the value in mix.exs
-      uses: ./action-a
+      uses: djordon/github-mix-tag@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
