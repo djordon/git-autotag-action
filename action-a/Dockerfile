@@ -10,7 +10,7 @@ LABEL "homepage"="http://github.com/actions"
 LABEL "maintainer"="Octocat <octocat@github.com>"
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git \
+    && apt-get install -y --no-install-recommends curl git \
     && apt-get clean \
     && locale-gen en_US.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
