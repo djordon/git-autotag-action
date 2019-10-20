@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-VERSION=$(cat mix.exs | grep "version: " | sed -e 's/.*version: "\(.*\)",/\1/')
+VERSION=$(cat mix.exs \
+    | grep --line-buffer "version: " \
+    | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\"" \
+    | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+")
+
 TAG=$(git tag | grep --extended-regexp "^v${VERSION}$")
 
 if [ ! -z $TAG ]
