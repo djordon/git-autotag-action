@@ -1,4 +1,4 @@
-name: Tagging master using mix.exs
+name: Tags master based on mix version
 on: 
   push:
     branches:
@@ -13,6 +13,6 @@ jobs:
     - name: The current tag
       run: echo $(git describe --dirty --tags)
     - name: Tag master depending on the value in mix.exs
-      uses: djordon/github-mix-tag@master
+      uses: djordon/git-autotag-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
