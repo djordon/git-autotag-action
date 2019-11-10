@@ -9,7 +9,7 @@ VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION})
 
 if [ -z $VERSION ]
 then 
-    echo "Version command yielded an empty version. Exiting"
+    echo "VERSION_COMMAND yielded an empty version. Exiting"
     exit 0
 fi
 
