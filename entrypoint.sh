@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
-VERSION=$(cat mix.exs \
+DEFAULT_VERSION='cat mix.exs \
     | grep --line-buffer "version: " \
     | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\"" \
-    | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+")
+    | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"'
+
+VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION})
+
+if [ -z $VERSION ]
+then 
+    echo "VERSION_COMMAND yielded an empty version. Exiting"
+    exit 0
+fi
 
 TAG=$(git tag | grep --extended-regexp "^v${VERSION}$")
 
