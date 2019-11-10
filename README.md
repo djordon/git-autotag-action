@@ -23,12 +23,12 @@ on:
       - master 
 jobs:
   build:
-    name: Tag master using mix.exs
+    name: Tag master using VERSION file
     runs-on: ubuntu-18.04    
     steps:
     - name: Checkout master
       uses: actions/checkout@master
-    - name: Tag master depending on the value in mix.exs
+    - name: Tag master depending on the value in VERSION file
       uses: djordon/git-autotag-action@v0.3.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
