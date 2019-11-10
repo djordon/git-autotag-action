@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-DEFAULT_VERSION='cat mix.exs \
-    | grep --line-buffer "version: " \
-    | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\"" \
+DEFAULT_VERSION='cat mix.exs
+    | grep --line-buffer "version: "
+    | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
     | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"'
 
 VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION})
