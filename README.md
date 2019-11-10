@@ -16,7 +16,7 @@ It is used to read the version defined in `mix.exs`, a file used in elixir proje
 
 A custom command can be used by setting the `VERSION_COMMAND` environment variable. For example if your version was in a `VERSION` file in the root of this repository, one could use something like the following in their GitHub Actions yaml file to use this Action:
 ```yaml
-name: Tagging master using mix.exs
+name: Tagging master using VERSION file
 on: 
   push:
     branches:
