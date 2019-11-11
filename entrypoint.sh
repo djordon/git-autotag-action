@@ -8,15 +8,15 @@ DEFAULT_VERSION='cat mix.exs
 VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION})
 
 if [ -z $VERSION ]
-then 
-    echo "VERSION_COMMAND yielded an empty version. Exiting"
-    exit 0
+then
+    echo "VERSION_COMMAND yielded an empty version. That's probably unexpected. Exiting with status 1."
+    exit 1
 fi
 
 TAG=$(git tag | grep --extended-regexp "^v${VERSION}$")
 
 if [ ! -z $TAG ]
-then 
+then
     echo "Tag $TAG already exists. Exiting"
     exit 0
 fi
