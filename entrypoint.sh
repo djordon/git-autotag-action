@@ -3,6 +3,12 @@
 DEFAULT_VERSION='cat VERSION'
 
 VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION} 2>/dev/null)
+V="v"
+
+if [[ ${PREPEND_V} == "false" ]];
+then
+    V=""
+fi
 
 if [ -z $VERSION ]
 then
@@ -10,7 +16,7 @@ then
     exit 1
 fi
 
-TAG=$(git tag | grep --extended-regexp "^v${VERSION}$")
+TAG=$(git tag | grep --extended-regexp "^${V}${VERSION}$")
 
 if [ ! -z $TAG ]
 then
