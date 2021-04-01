@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-DEFAULT_VERSION='cat mix.exs
-    | grep --line-buffer "version: "
-    | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
-    | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"'
+DEFAULT_VERSION='cat VERSION'
 
-VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION})
+VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION} 2>/dev/null)
+V="v"
+
+if [[ ${PREPEND_V} == "false" ]];
+then
+    V=""
+fi
 
 if [ -z $VERSION ]
 then
@@ -13,7 +16,7 @@ then
     exit 1
 fi
 
-TAG=$(git tag | grep --extended-regexp "^v${VERSION}$")
+TAG=$(git tag | grep --extended-regexp "^${V}${VERSION}$")
 
 if [ ! -z $TAG ]
 then
@@ -27,7 +30,7 @@ curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITO
   -H "Authorization: token $GITHUB_TOKEN" \
   -d @- << EOF
 {
-  "ref": "refs/tags/v${VERSION}",
+  "ref": "refs/tags/${V}${VERSION}",
   "sha": "${COMMIT}"
 }
 EOF
