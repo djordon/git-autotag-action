@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
-DEFAULT_VERSION='cat mix.exs
-    | grep --line-buffer "version: "
-    | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
-    | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"'
+DEFAULT_VERSION='cat VERSION'
 
-VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION})
+VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION} 2>/dev/null)
 
 if [ -z $VERSION ]
 then
