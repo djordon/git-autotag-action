@@ -30,7 +30,7 @@ curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITO
   -H "Authorization: token $GITHUB_TOKEN" \
   -d @- << EOF
 {
-  "ref": "refs/tags/v${VERSION}",
+  "ref": "refs/tags/${V}${VERSION}",
   "sha": "${COMMIT}"
 }
 EOF
