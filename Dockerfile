@@ -4,12 +4,12 @@ LABEL "com.github.actions.name"="Git auto-tagger"
 LABEL "com.github.actions.description"="Tags the repository using the verion from the code"
 LABEL "maintainer"="Daniel Jordon"
 
-RUN apt-get -qq update \
-    && apt-get -qq --assume-yes --no-install-recommends install \
+RUN apt-get --quiet update \
+    && apt-get --quiet --assume-yes --no-install-recommends install \
         ca-certificates \
         curl \
         git \
-    && apt-get clean \
+    && apt-get --quiet clean \
     && rm -rf /var/lib/apt/lists/*
 
 ADD entrypoint.sh /entrypoint.sh
