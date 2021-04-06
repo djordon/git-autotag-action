@@ -24,6 +24,8 @@ then
     exit 0
 fi
 
+echo "The tag is: $TAG, but why"
+
 COMMIT=$(git rev-parse HEAD)
 
 curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
