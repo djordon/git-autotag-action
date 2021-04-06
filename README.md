@@ -45,10 +45,10 @@ For `rust`, you can do something like the following:
 ```yaml
 ...
     - name: Tagging repo using version specified in Cargo.toml
-      uses: djordon/git-autotag-action@v0.4.0
+      uses: djordon/git-autotag-action@v0.5.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION_COMMAND: |
+        VERSION_COMMAND: >
           cat Cargo.toml
             | grep --extended-regexp "^version ="
             | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"
