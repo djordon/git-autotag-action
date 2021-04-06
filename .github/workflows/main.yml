@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@master
     - name: The current tag
       run: |
-        git fetch --prune --unshallow --tags
+        git fetch --quiet --prune --unshallow --tags
         echo $(git describe --dirty --tags)
     - name: Tagging repo based on the contents of the VERSION file
       uses: djordon/git-autotag-action@master
