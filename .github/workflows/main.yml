@@ -11,7 +11,7 @@ jobs:
     - name: Checkout master
       uses: actions/checkout@master
     - name: The current tag
-      run: echo $(git describe --dirty --tags)
+      run: echo "$(git describe --dirty --tags)"
     - name: Tagging repo based on the contents of the VERSION file
       uses: djordon/git-autotag-action@master
       env:
