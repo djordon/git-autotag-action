@@ -31,10 +31,10 @@ jobs:
       uses: djordon/git-autotag-action@v0.5.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION_COMMAND: |
-          cat mix.exs \
-            | grep --line-buffer "version: " \
-            | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\"" \
+        VERSION_COMMAND: >
+          cat mix.exs
+            | grep --line-buffer "version: "
+            | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
             | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"
 ```
 
