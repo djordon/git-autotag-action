@@ -51,6 +51,6 @@ For `rust`, you can do something like the following:
         VERSION_COMMAND: >
           cat Cargo.toml
             | grep --extended-regexp "^version ="
-            | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+"
+            | grep --extended-regexp --only-matching "[0-9]+\.[0-9]+.[0-9]+[-\.\+a-zA-Z0-9]*"
             | head --lines=1
 ```
