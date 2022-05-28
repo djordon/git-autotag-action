@@ -27,6 +27,7 @@ fi
 COMMIT=$(git rev-parse HEAD)
 
 curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
+  -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token $GITHUB_TOKEN" \
   -d @- << EOF
 {
