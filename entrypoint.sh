@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Taken from https://github.com/actions/checkout/issues/760
+git config --global --add safe.directory "$GITHUB_WORKSPACE"
+git config --global --add safe.directory /github/workspace
+
 DEFAULT_VERSION='cat VERSION'
 
 VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION} 2>/dev/null)
