@@ -7,12 +7,6 @@ git config --global --add safe.directory /github/workspace
 DEFAULT_VERSION='cat VERSION'
 
 VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION} 2>/dev/null)
-V="v"
-
-if [ "${PREPEND_V}" = "false" ];
-then
-    V=""
-fi
 
 if [ -z "$VERSION" ]
 then
@@ -20,7 +14,7 @@ then
     exit 1
 fi
 
-TAG=$(git tag | grep --extended-regexp "^${V}${VERSION}$")
+TAG=$(git tag | grep --extended-regexp "^${VERSION_PREFIX}${VERSION}$")
 
 if [ ! -z "$TAG" ]
 then
@@ -30,12 +24,14 @@ fi
 
 COMMIT=$(git rev-parse HEAD)
 
+echo "Tagging the repo with ${VERSION_PREFIX}${VERSION}"
+
 curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
   -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token $GITHUB_TOKEN" \
   -d @- << EOF
 {
-  "ref": "refs/tags/${V}${VERSION}",
+  "ref": "refs/tags/${VERSION_PREFIX}${VERSION}",
   "sha": "${COMMIT}"
 }
 EOF
