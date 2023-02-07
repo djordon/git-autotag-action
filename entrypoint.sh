@@ -8,11 +8,6 @@ DEFAULT_VERSION='cat VERSION'
 
 VERSION=$(eval ${VERSION_COMMAND:-$DEFAULT_VERSION} 2>/dev/null)
 
-if [ -z "$VERSION_PREFIX" ];
-then
-    VERSION_PREFIX="v"
-fi
-
 if [ -z "$VERSION" ]
 then
     echo "VERSION_COMMAND yielded an empty version. That's probably unexpected. Exiting with status 1."
