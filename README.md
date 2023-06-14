@@ -18,7 +18,7 @@ For `rust`, you can do something like the following:
 ```yaml
 ...
     - name: Tagging repo using version specified in Cargo.toml
-      uses: djordon/git-autotag-action@v0.5.0
+      uses: djordon/git-autotag-action@v0.6.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VERSION_PREFIX: v
@@ -46,7 +46,7 @@ jobs:
     - name: Checkout master
       uses: actions/checkout@master
     - name: Tagging repo using version specified in mix.exs
-      uses: djordon/git-autotag-action@v0.5.0
+      uses: djordon/git-autotag-action@v0.6.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         VERSION_PREFIX: v
