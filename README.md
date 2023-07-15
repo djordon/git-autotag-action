@@ -24,9 +24,9 @@ For `rust`, you can do something like the following:
       with:
         version-command: >
           v$(cat Cargo.toml
-            | grep --extended-regexp "^version ="
-            | grep --extended-regexp --only-matching "[0-9]+\.[0-9]+.[0-9]+[-\.\+a-zA-Z0-9]*"
-            | head --lines=1)
+          | grep --extended-regexp "^version ="
+          | grep --extended-regexp --only-matching "[0-9]+\.[0-9]+.[0-9]+[-\.\+a-zA-Z0-9]*"
+          | head --lines=1)
 ```
 
 
@@ -52,7 +52,7 @@ jobs:
       with:
         version-command: >
           v$(cat mix.exs
-            | grep --line-buffer "version: "
-            | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
-            | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+")
+          | grep --line-buffer "version: "
+          | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
+          | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+")
 ```
