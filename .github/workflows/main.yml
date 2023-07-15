@@ -20,6 +20,7 @@ jobs:
         echo $(git describe --dirty --tags)
     - name: Tagging repo based on the contents of the VERSION file
       uses: djordon/git-autotag-action@master
+      with:
+        version-command: v$(cat VERSION)
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        VERSION_PREFIX: v
