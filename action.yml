@@ -1,0 +1,11 @@
+name: 'Git Autotag'
+description: 'Tag the repository when the action runs'
+inputs:
+  version-command:
+    description: An arbitrary bash command for computing the version.
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.version-command }}
