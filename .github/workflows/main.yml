@@ -1,8 +1,8 @@
 name: Creates a tag for the repo
-on: 
-  push:
-    branches:
-      - master 
+on: [push]
+  # push:
+  #   branches:
+  #     - master 
 jobs:
   build:
     name: Tag repo using VERSION file

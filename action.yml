@@ -5,7 +5,9 @@ inputs:
     description: The tag to create
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.version-command }}
+  using: "composite"
+  steps:
+    - run: echo "Attempting to create a lightweight tag of ${{ inputs.tag }} for ${{ github.sha }}"
+      shell: bash
+    - run: entrypoint.sh "${{ inputs.tag }}"
+      shell: bash

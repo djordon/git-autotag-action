@@ -14,7 +14,7 @@ then
     exit 0
 fi
 
-echo "Tagging the repo with ${VERSION} to commit ${GITHUB_SHA}"
+echo "Tagging the repo with ${VERSION} to commit ${GITHUB_SHA:?No sha supplied.}"
 
 git tag ${VERSION}
 git push origin ${VERSION}
