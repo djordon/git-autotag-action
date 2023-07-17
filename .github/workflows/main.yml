@@ -25,6 +25,6 @@ jobs:
         TAG=$(cat VERSION)
         echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo based on the contents of the VERSION file
-      uses: djordon/git-autotag-action@master
+      uses: djordon/git-autotag-action@1c96cbb7a64dfb25532bbd8b5c230adeface5da6
       with:
         tag: ${{ steps.computed-tag.outputs.tag }}
