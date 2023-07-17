@@ -1,24 +1,16 @@
 #!/usr/bin/env bash
+# Using /usr/bin/env bash is probably unnecessary but doesn't hurt.
+# See https://tldp.org/LDP/abs/html/sha-bang.html#AEN269
 
-if [ -z "$1" ]
-then
-  echo "Must supply the version command. Exiting with status 1."
-  exit 1
-fi
-
-Taken from https://github.com/actions/checkout/issues/760
+# Taken from https://github.com/actions/checkout/issues/760
 git config --global --add safe.directory "$GITHUB_WORKSPACE"
 git config --global --add safe.directory /github/workspace
 
-VERSION=$(eval echo "$1" 2>/dev/null)
+VERSION="${1:?Must supply the version. Exiting with status 1.}"
 
-if [ -z "$VERSION" ]
-then
-    echo "version-command yielded an empty version. That's probably unexpected. Exiting with status 1."
-    exit 1
-fi
-
-TAG=$(git tag | grep --extended-regexp "^${VERSION}$")
+# grep returns error exit status if there is no match, but that is not actually
+# an "error" here
+TAG=$(git tag | grep --extended-regexp "^${VERSION}$" || true)
 
 if [ ! -z "$TAG" ]
 then
@@ -30,7 +22,7 @@ COMMIT=$(git rev-parse HEAD)
 
 echo "Tagging the repo with ${VERSION}"
 
-curl --silent --show-error -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
+curl --silent --show-error --fail-with-body -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
   -H "Accept: application/vnd.github.v3+json" \
   -H "Authorization: token $GITHUB_TOKEN" \
   -d @- << EOF

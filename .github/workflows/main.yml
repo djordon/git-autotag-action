@@ -18,9 +18,15 @@ jobs:
       run: |
         git fetch --quiet --prune --unshallow --tags
         echo $(git describe --dirty --tags)
+    - name: The new tag
+      id: computed-tag
+      run: |
+        set -e
+        TAG=$(cat VERSION)
+        echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo based on the contents of the VERSION file
       uses: djordon/git-autotag-action@master
       with:
-        version-command: v$(cat VERSION)
+        tag: ${{ steps.computed-tag.outputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
