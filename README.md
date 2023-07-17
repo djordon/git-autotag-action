@@ -1,16 +1,50 @@
-# Automatic Repo Tagging GitHub Action
+# A Repo Tagging GitHub Action
 
-This GitHub Action automatically tags your repository with a tag determined by a shell command, and you have control of the shell command. Some notes:
-1. Suppose the shell command is `cat VERSION` and the contents of the `VERSION` file is `1.2.3-rc1`, then the default behavior is to have the repo tagged with `1.2.3-rc1` when this action is run. If the command was `v$(cat VERSION)` then the repo would be tagged with `v1.2.3-rc1`.
-2. If the repo is already tagged with the version then no attempt is made to tag the repo and nothing happens.
+This GitHub Action creates a [lightweight tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) for the repository using head of the repository. Note that if the repo is already tagged with the version then no attempt is made to tag the repo and nothing happens.
 
-Below are some example shell commands that determine the version.
+It is expected that you compute the version in another step of yout workflow. Below are some example shell commands that you can use to determine the version.
 
 
-## Getting the version from a file
+## Getting the tag from a file
 
-This action sets the version to get the version tag. This can be done by computing the version in another step and passing it to this action. Some languages allow you (or require you) to set the version in some config file. I've included some example `main.yaml`s with an appropriate `where we compute the tag`s.
+Some languages allow you (or require you) to set the version in some config file. I've included some example `main.yaml`s.
 
+### Python
+
+For `python` in `poetry` managed projects you can do something like the following:
+```yaml
+name: Tagging main using pyproject.toml
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Tag main using pyproject.toml
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout main
+      uses: actions/checkout@v3
+    - name: The current git state
+      run: |
+        git fetch --quiet --prune --unshallow --tags
+        echo $(git describe --dirty --tags)
+    - name: The new tag
+      id: computed-tag
+      run: |
+        set -e
+        TAG=$(cat pyproject.toml \
+          | grep --extended-regexp "^version =" \
+          | grep --extended-regexp --only-matching "[0-9]+\.[0-9]+.[0-9]+[-\.\+a-zA-Z0-9]*" \
+          | head --lines=1)
+        echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
+    - name: Tag main depending on the value in pyproject.toml
+      uses: djordon/git-autotag-action@v0.7.0-beta1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag: ${{ steps.computed-tag.outputs.tag }}
+```
 
 ### Rust
 
@@ -37,19 +71,9 @@ For `rust`, you can do something like the following:
 
 ### Elixir
 
-For `elixir`, the `main.yaml` below can be used to read the version defined in `mix.exs` (assuming the `version` key is on it's own line in the `project` section of `mix.exs`):
+For `elixir`, the `yaml` below can be used to read the version defined in `mix.exs` (assuming the `version` key is on it's own line in the `project` section of `mix.exs`):
 ```yaml
-name: Creates a tag for the repo
-  push:
-    branches:
-      - master 
-jobs:
-  build:
-    name: Tag repo using mix.exs file
-    runs-on: ubuntu-20.04    
-    steps:
-    - name: Checkout master
-      uses: actions/checkout@v3
+...
     - name: The new tag
       id: computed-tag
       run: |
