@@ -40,8 +40,6 @@ jobs:
         echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tag main depending on the value in pyproject.toml
       uses: djordon/git-autotag-action@v0.7.0-beta1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag: ${{ steps.computed-tag.outputs.tag }}
 ```
@@ -62,8 +60,6 @@ For `rust`, you can do something like the following:
         echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo using version specified in Cargo.toml
       uses: djordon/git-autotag-action@v0.7.0-beta1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag: ${{ steps.computed-tag.outputs.tag }}
 ```
@@ -85,8 +81,6 @@ For `elixir`, the `yaml` below can be used to read the version defined in `mix.e
         echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo using version specified in mix.exs
       uses: djordon/git-autotag-action@v0.7.0-beta1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag: ${{ steps.computed-tag.outputs.tag }}
 ```

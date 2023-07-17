@@ -7,7 +7,6 @@ LABEL "maintainer"="Daniel Jordon"
 RUN apt-get -qq update \
     && apt-get -qq --assume-yes --no-install-recommends install \
         ca-certificates \
-        curl \
         git \
     && apt-get -qq clean \
     && rm -rf /var/lib/apt/lists/*

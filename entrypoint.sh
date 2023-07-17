@@ -16,12 +16,5 @@ fi
 
 echo "Tagging the repo with ${VERSION} to commit ${GITHUB_SHA}"
 
-curl --silent --show-error --fail-with-body -X POST https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token $GITHUB_TOKEN" \
-  -d @- << EOF
-{
-  "ref": "refs/tags/${VERSION}",
-  "sha": "${GITHUB_SHA}"
-}
-EOF
+git tag ${VERSION}
+git push origin ${VERSION}
