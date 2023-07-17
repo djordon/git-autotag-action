@@ -25,10 +25,6 @@ jobs:
     steps:
     - name: Checkout main
       uses: actions/checkout@v3
-    - name: The current git state
-      run: |
-        git fetch --quiet --prune --unshallow --tags
-        echo $(git describe --dirty --tags)
     - name: The new tag
       id: computed-tag
       run: |
