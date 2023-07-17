@@ -1,11 +1,15 @@
 name: 'Git Autotag'
 description: 'Tag the repository when the action runs'
 inputs:
-  version-command:
-    description: An arbitrary bash command for computing the version.
+  tag:
+    description: The tag to create
     required: true
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.version-command }}
+  using: "composite"
+  steps:
+    - run: |
+        git fetch --quiet --prune --unshallow --tags
+        echo $(git describe --dirty --tags)
+      shell: bash
+    - run: $GITHUB_ACTION_PATH/entrypoint.sh "${{ inputs.tag }}"
+      shell: bash
