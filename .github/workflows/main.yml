@@ -1,8 +1,8 @@
 name: Creates a tag for the repo
-on: [push]
-  # push:
-  #   branches:
-  #     - master 
+on:
+  push:
+    branches:
+      - master 
 jobs:
   build:
     name: Tag repo using VERSION file
@@ -17,6 +17,6 @@ jobs:
         TAG=$(cat VERSION)
         echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo based on the contents of the VERSION file
-      uses: djordon/git-autotag-action@final-real-action-push
+      uses: djordon/git-autotag-action@master
       with:
         tag: ${{ steps.computed-tag.outputs.tag }}
