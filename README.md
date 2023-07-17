@@ -9,7 +9,7 @@ Below are some example shell commands that determine the version.
 
 ## Getting the version from a file
 
-This action allows the user to customize the command used to get the name of the tag. This is done by setting a `version-command` input. Some languages allow you (or require you) to set the version in some config file. I've included some example `main.yaml`s with an appropriate `version-command`s.
+This action sets the version to get the version tag. This can be done by computing the version in another step and passing it to this action. Some languages allow you (or require you) to set the version in some config file. I've included some example `main.yaml`s with an appropriate `where we compute the tag`s.
 
 
 ### Rust
@@ -17,16 +17,21 @@ This action allows the user to customize the command used to get the name of the
 For `rust`, you can do something like the following:
 ```yaml
 ...
+    - name: The new tag
+      id: computed-tag
+      run: |
+        set -e
+        TAG=$(cat Cargo.toml \
+          | grep --extended-regexp "^version =" \
+          | grep --extended-regexp --only-matching "[0-9]+\.[0-9]+.[0-9]+[-\.\+a-zA-Z0-9]*" \
+          | head --lines=1)
+        echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo using version specified in Cargo.toml
-      uses: djordon/git-autotag-action@v0.7.0
+      uses: djordon/git-autotag-action@v0.7.0-beta1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        version-command: >
-          v$(cat Cargo.toml
-          | grep --extended-regexp "^version ="
-          | grep --extended-regexp --only-matching "[0-9]+\.[0-9]+.[0-9]+[-\.\+a-zA-Z0-9]*"
-          | head --lines=1)
+        tag: ${{ steps.computed-tag.outputs.tag }}
 ```
 
 
@@ -44,15 +49,20 @@ jobs:
     runs-on: ubuntu-20.04    
     steps:
     - name: Checkout master
-      uses: actions/checkout@master
+      uses: actions/checkout@v3
+    - name: The new tag
+      id: computed-tag
+      run: |
+        set -e
+        TAG=$(cat mix.exs \
+          | grep --line-buffer "version: " \
+          | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\"" \
+          | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+")
+        echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo using version specified in mix.exs
-      uses: djordon/git-autotag-action@v0.7.0
+      uses: djordon/git-autotag-action@v0.7.0-beta1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        version-command: >
-          v$(cat mix.exs
-          | grep --line-buffer "version: "
-          | grep --extended-regexp --only-matching "\"[-0-9\.\+a-zA-Z]+\""
-          | grep --extended-regexp --only-matching "[-0-9\.\+a-zA-Z]+")
+        tag: ${{ steps.computed-tag.outputs.tag }}
 ```
