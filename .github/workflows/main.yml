@@ -10,14 +10,6 @@ jobs:
     steps:
     - name: Checkout master
       uses: actions/checkout@v3
-    - name: Configure safe directory
-      run: |
-        git config --global --add safe.directory "$GITHUB_WORKSPACE"
-        git config --global --add safe.directory /github/workspace
-    - name: The current tag
-      run: |
-        git fetch --quiet --prune --unshallow --tags
-        echo $(git describe --dirty --tags)
     - name: The new tag
       id: computed-tag
       run: |
@@ -25,6 +17,6 @@ jobs:
         TAG=$(cat VERSION)
         echo "tag=v$TAG" >> "$GITHUB_OUTPUT"
     - name: Tagging repo based on the contents of the VERSION file
-      uses: djordon/git-autotag-action@1c96cbb7a64dfb25532bbd8b5c230adeface5da6
+      uses: djordon/git-autotag-action@final-real-action-push
       with:
         tag: ${{ steps.computed-tag.outputs.tag }}
