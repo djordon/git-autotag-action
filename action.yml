@@ -7,12 +7,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
-        echo "Fetching existing git tags"
+    - name: "Fetching existing git tags"
+      run: |
         git fetch --quiet --prune --unshallow --tags
         echo $(git describe --dirty --tags)
       shell: bash
-    - run: echo "Attempting to create a lightweight tag of ${{ inputs.tag }} for ${{ github.sha }}"
-      shell: bash
-    - run: bash $GITHUB_ACTION_PATH/entrypoint.sh "${{ inputs.tag }}"
+    - name: "Creating lightweight tag ${{ inputs.tag }} for commit ${{ github.sha }}"
+      run: $GITHUB_ACTION_PATH/entrypoint.sh "${{ inputs.tag }}"
       shell: bash
